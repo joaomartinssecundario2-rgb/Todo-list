@@ -67,27 +67,67 @@ h1 {
     display: flex;
     justify-content: space-between;
     align-items: center;
+
 }
 
-#listaTarefas li .btn-remover {
-    background: #dc3545;
-    color: white;
+btn-acao {
+    padding: 6px 12px;
     border: none;
-    padding: 5px 10px;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
-}
-p {
-    text-align: center;
-    color: #828282;
-    margin-top: 20px;
+    font-weight: bold;
+    font-size: 13px;
+    margin-left: 8px;
 }
 
-#listaTarefas li .btn-concluir {
+#listaTarefas li>div {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-concluir {
     background: #28a745;
     color: white;
     border: none;
     padding: 5px 10px;
     border-radius: 4px;
     cursor: pointer;
+
+}
+
+.btn-concluir:hover {
+    background: #1e7e34;
+}
+
+.btn-desfazer {
+    background: #f9f906;
+    color: rgb(4, 4, 4);
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-desfazer:hover {
+    background: #99a71d;
+}
+
+.btn-remover {
+    background: #ff0400;
+    color: rgb(255, 255, 255);
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+
+}
+
+.btn-remover:hover {
+    background: #545b62;
+}
+
+p {
+    text-align: center;
+    color: #828282;
+    margin-top: 20px;
 }

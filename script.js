@@ -42,35 +42,39 @@ function renderizarTarefas() {
 
     tarefas.forEach(function (tarefa, indice) {
         const li = document.createElement('li');
+        const span = document.createElement('span');
+        span.textContent = tarefa.texto;
+        if (tarefa.concluida) {
+            span.style.textDecoration = 'line-through';
+            span.style.color = '#888';
+        }
+        const btnConcluir = document.createElement('button');
+        btnConcluir.textContent = tarefa.concluida ? 'Desfazer' : 'Concluir';
+        btnConcluir.className = tarefa.concluida ? 'btn-acao btn-desfazer' : 'btn-acao btn-concluir';
+        btnConcluir.addEventListener('click', function () {
+            tarefas[indice].concluida = !tarefas[indice].concluida;
+            localStorage.setItem('tarefas', JSON.stringify(tarefas));
+            renderizarTarefas();
+        });
 
-        const estiloRisco = tarefa.concluida ? 'style="text-decoration: line-through; color: #888;"' : '';
-        const textoBotaoConcluir = tarefa.concluida ? 'Desmarcar' : 'Concluir';
+        const btnRemover = document.createElement('button');
+        btnRemover.textContent = 'Remover';
+        btnRemover.className = 'btn-acao btn-remover';
+        btnRemover.addEventListener('click', function () {
+            removerTarefa(indice);
+        });
 
-        li.innerHTML = `
-            <span ${estiloRisco}>${tarefa.texto}</span>
-            <div>
-                <button class="btn-concluir" data-indice="${indice}">${textoBotaoConcluir}</button>
-                <button class="btn-remover" data-indice="${indice}">Remover</button>
-            </div>
-        `;
+        const divBotoes = document.createElement('div');
+        divBotoes.className = 'btn-acao-group';
+        divBotoes.appendChild(btnConcluir);
+        divBotoes.appendChild(btnRemover);
+
+        li.appendChild(span);
+        li.appendChild(divBotoes);
         listaTarefas.appendChild(li);
     });
 
     totalTarefas.textContent = tarefas.length;
-
-    document.querySelectorAll('.btn-remover').forEach(function (botao) {
-        botao.addEventListener('click', function () {
-            const indice = parseInt(this.getAttribute('data-indice'));
-            removerTarefa(indice);
-        });
-    });
-
-    document.querySelectorAll('.btn-concluir').forEach(function (botao) {
-        botao.addEventListener('click', function () {
-            const indice = parseInt(this.getAttribute('data-indice'));
-            alternarConclusao(indice);
-        });
-    });
 }
 
 function alternarConclusao(indice) {
