@@ -5,6 +5,16 @@ const totalTarefas = document.getElementById('totalTarefas');
 
 let tarefas = [];
 
+function carregarTarefas() {
+    const tarefasSalvas = localStorage.getItem('tarefas');
+    if (tarefasSalvas) {
+        tarefas = JSON.parse(tarefasSalvas);
+    }
+    renderizarTarefas();
+}
+
+carregarTarefas();
+
 function adicionarTarefa() {
     const texto = inputTarefa.value.trim();
 
@@ -21,6 +31,8 @@ function adicionarTarefa() {
 
     tarefas.push({ texto: texto, concluida: false });
     inputTarefa.value = '';
+
+    localStorage.setItem('tarefas', JSON.stringify(tarefas));
 
     renderizarTarefas();
 }
@@ -68,6 +80,7 @@ function alternarConclusao(indice) {
 
 function removerTarefa(indice) {
     tarefas.splice(indice, 1);
+    localStorage.setItem('tarefas', JSON.stringify(tarefas));
     renderizarTarefas();
 }
 
