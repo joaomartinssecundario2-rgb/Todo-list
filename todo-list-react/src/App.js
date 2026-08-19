@@ -1,26 +1,35 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './App.css';
 
 function App() {
+ 
+  const [tarefas, setTarefas] = useState(() => {
+    const salvas = localStorage.getItem('tarefas-react');
+    return salvas ? JSON.parse(salvas) : [];
+  });
 
-  const [tarefas, setTarefas] = useState([]);
   const [input, setInput] = useState('');
 
-  const AdicionarTarefa = () => {
+ 
+  useEffect(() => {
+    localStorage.setItem('tarefas-react', JSON.stringify(tarefas));
+  }, [tarefas]);
+
+  const adicionarTarefa = () => {
     if (input.trim() === '') return;
-    setTarefas([...tarefas, {id: Date.now(), texto: input, concluida: false}]);
+    setTarefas([...tarefas, { id: Date.now(), texto: input, concluida: false }]);
     setInput('');
   };
 
-  const RemoverTarefa = (id) => {
+  const removerTarefa = (id) => {
     setTarefas(tarefas.filter(tarefa => tarefa.id !== id));
   };
 
-  const ConcluirTarefa = (id) => {
-    setTarefas(tarefas.map(tarefa => 
-      tarefa.id === id ? {...tarefa, concluida: !tarefa.concluida} : tarefa
+  const concluirTarefa = (id) => {
+    setTarefas(tarefas.map(tarefa =>
+      tarefa.id === id ? { ...tarefa, concluida: !tarefa.concluida } : tarefa
     ));
-  }
+  };
 
   return (
     <div className="container">
@@ -32,7 +41,7 @@ function App() {
           onChange={(e) => setInput(e.target.value)}
           placeholder="Digite uma nova tarefa..."
         />
-        <button onClick={AdicionarTarefa}>Adicionar</button>
+        <button onClick={adicionarTarefa}>Adicionar</button>
       </div>
       <ul>
         {tarefas.map(tarefa => (
@@ -40,10 +49,10 @@ function App() {
             <span style={{ textDecoration: tarefa.concluida ? 'line-through' : 'none' }}>
               {tarefa.texto}
             </span>
-            <button onClick={() => ConcluirTarefa(tarefa.id)}>
+            <button onClick={() => concluirTarefa(tarefa.id)}>
               {tarefa.concluida ? 'Desfazer' : 'Concluir'}
             </button>
-            <button onClick={() => RemoverTarefa(tarefa.id)}>Remover</button>
+            <button onClick={() => removerTarefa(tarefa.id)}>Remover</button>
           </li>
         ))}
       </ul>
@@ -51,6 +60,5 @@ function App() {
     </div>
   );
 }
-
 
 export default App;
